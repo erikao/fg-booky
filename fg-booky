@@ -27,39 +27,26 @@
 import sys
 from BeautifulSoup import BeautifulSoup
 
-# p tags with these classes correspond to headlines
-headline_tags = set(["headline", "cover-head", "eye-on-head", "letter-head",
-                     "heads-small"])
+# p tags with these classes correspond to school name
+name_tags = set(["x2-name"])
 
 # p tags with these classes correspond to sub-headlines
-subhead_tags = set(["cover-dek", "news-sub", "subhead", "subhead-2"])
+address_tags = set(["x3-address"])
 
 # p tags with these classes correspond to bylines
-byline_tags = set(["cover-by", "news-by", 'byline'])
+website_tags = set(["x3-web"])
     
 # p tags with these classes correspond to body content 
-body_tags = set(["body-copy", "cover-body", "cover-body-first", "letter-about",
-                 "letter-copy", "letter-to", "letter-writer", "subhead-2", "body-italic",
-                 "body-sans", "sidebar", "sidebar-bullet", "sidebar-sub"])
+generalinfo_tags = set(["x4-body-style-7-small-tight"])
 
 # p tags with these classes correspond to bios
-bio_tags = set(["author-bio"])
+racialinfo_tags = set(["x5-racial-demo"])
 
 # tags with these classes should be ignored.
 #
 # any div which only has these classes is not a story.
 ignore_tags = set(
-        ["calendar-copy", "calendar-year", "caption", "caption-2", "continued-sans", "x23-sidebar-copy", "x16-chart-source", "x16-school-list", "x17-chart-info", "x17-chart-source", "x23-sidebar-copy", "x7-category", "x7-list",
-         "cover-left-descrip", "cover-left-factoid", "cover-left-focus",
-         "cover-left-number", "cover-left-spanish", "cover-left-volume",
-         "cover-pull", "department-header", "department-header-bw", "jump-head",
-         "kicker-color", "masthead-copy", "masthead-independent", "photo-credit",
-         "pull-color", "quick-body", "quick-name", "quick-school", "spanish-tout",
-         "timeline-no-date", "timeline-s-alone", "timeline-s-alone-no-date",
-         "toc-numbers", "toc-sub", "toc-title", "web-extra-copy", "who-ya-body",
-         "who-ya-hed-black", "who-ya-hed-bold", "x17-", "x17-info", "x17-list", "subhead-color-ital", "byline-right-sans", "chart-name",
-         "x17-list-sub", "x18-chart-center", "x18-chart-center-tab", "x19-chart-bold", "x19-chart", "body-sans-ital", "body-sans-ital-right", "bio-unitalic", "body-bold", "body-bold-ital", "body-sans-italic", "calendar-date", "caption-unitalic", "cover-body-italic", "kicker-ital", "letter-about-unital", "quick-body-ital", "sidebar-bold-con", "trade-bold", "trade-bold-ital", "x16-drop", "x18-chart-larger-number", "x13-body-bold-green", "body-bold-blue", "x16-box-hed", "x18-name", "x18-address"
-])
+        ["group", "x1-section-hed"])
 
 # these are character-sequences which should be replaced by their
 # HTML entitiy equivalents. this is done in the cleanup() function.
@@ -94,15 +81,15 @@ def cleanup(s):
 # this class represents a story--each of the 5 fields defaults to
 # an empty string. it's mostly for organization purposes right now.
 class Story(object):
-    def __init__(self, head="", subhead="", byline="", body="", authorbio=""):
-        self.head = head
-        self.subhead = subhead
-        self.byline = byline
-        self.body = body
-        self.authorbio = authorbio
+    def __init__(self, name="", address="", website="", generalinfo="", racialinfo=""):
+        self.name = name
+        self.address = address
+        self.website = website
+        self.generalinfo = generalinfo
+        self.racialinfo = racialinfo
 
 # set this to True when you want to see debugging output.
-debugging = False
+debugging = True
 
 # use debug() when you want to print out test strings.
 def debug(s):
@@ -145,10 +132,8 @@ if __name__ == "__main__":
 
             # add this p tag to tags that have important content
             important.append(p)
-
-        if (u'body-copy' in classes or u'cover-body' in classes or
-            u'letter-copy' in classes or u'body-sans' in classes or
-            u'sidebar' in classes):
+            
+        if (u'x4-body-style-7-small-tight' in classes):
             # we saw at least one of the classes we care about,
             # so we will make a story.
             pass
@@ -159,12 +144,12 @@ if __name__ == "__main__":
             continue
     
         # HEADLINE , SUBHEAD , BYLINE , BODY-COPY , AUTHOR-BIO
-        headline = []
-        subhead  = []
-        byline   = []
+        name = []
+        address  = []
+        website   = []
         prebody  = []
-        body     = []
-        bio      = []
+        generalinfo     = []
+        racialinfo      = []
 
         # loop over our "important" tags, adding content to whichever
         # field this p applies to.
@@ -173,22 +158,22 @@ if __name__ == "__main__":
 
             if c == 'subhead-3':
                 data = '<h3>' + p.renderContents() + '</h3>'
-		body.append(data)
+		generalinfo.append(data)
 		continue
             else:
                 del p['class']
                 data = str(p)
 
-            if c in headline_tags:
-                headline.append(data)
-            elif c in subhead_tags:
-                subhead.append(data)
-            elif c in byline_tags:
-                byline.append(data)
-            elif c in body_tags:
+            if c in name_tags:
+                name.append(data)
+            elif c in address_tags:
+                address.append(data)
+            elif c in website_tags:
+                website.append(data)
+            elif c in generalinfo_tags:
                 prebody.append(p)
-            elif c in bio_tags:
-                bio.append(data)
+            elif c in racialinfo_tags:
+                racialinfo.append(data)
             else:
                 raise Exception("arggg! can't handle p class=%r!!" % c)
  
@@ -196,45 +181,45 @@ if __name__ == "__main__":
 	    for span in p.findAll("span"):
 		cls = span.get('class')
 		txt = span.text
-		if cls == 'body-ital':
+		if cls == 'trade-obl':
 		    span.replaceWith("<em>%s</em>" % txt)
 		elif cls == 'cover-body-italic':
 		    span.replaceWith("<em>%s</em>" % txt)
 		elif cls == 'bio-unital':
 		    span.replaceWith("<em>%s</em>" % txt)
-	    body.append(str(p))
+	    generalinfo.append(str(p))
 
         # join all the seperate p tag content into the strings we care about
-        h = ''.join(headline)
-        s = ''.join(subhead)
-        y = ''.join(byline)
-        b = ''.join(body)
-        a = ''.join(bio)
+        n = ''.join(name)
+        a = ''.join(address)
+        w = ''.join(website)
+        g = ''.join(generalinfo)
+        r = ''.join(racialinfo)
 
-        story = Story(head=cleanup(h),
-                      subhead=cleanup(s),
-                      byline=cleanup(y),
-                      body=cleanup(b),
-                      authorbio=cleanup(a))
+        story = Story(name=cleanup(n),
+                      address=cleanup(a),
+                      website=cleanup(w),
+                      generalinfo=cleanup(g),
+                      racialinfo=cleanup(r))
 
         stories.append(story)
 
     # first print all the heads, separated by tabs
-    heads = [st.head for st in stories]
-    print "\t".join(heads)
+    names = [st.name for st in stories]
+    print "\t".join(names)
 
     # next print all the subheads
-    subheads = [st.subhead for st in stories]
-    print "\t".join(subheads)
+    addresses = [st.address for st in stories]
+    print "\t".join(addresses)
 
     # next the bylines
-    bylines = [st.byline for st in stories]
-    print "\t".join(bylines)
+    websites = [st.website for st in stories]
+    print "\t".join(websites)
 
     # next the bodies
-    bodies = [st.body for st in stories]
-    print "\t".join(bodies)
+    generalinfos = [st.generalinfo for st in stories]
+    print "\t".join(generalinfos)
 
     # finally the author bios
-    authorbios = [st.authorbio for st in stories]
-    print "\t".join(authorbios)
+    racialinfos = [st.racialinfo for st in stories]
+    print "\t".join(racialinfos)
