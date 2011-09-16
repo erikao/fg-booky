@@ -150,7 +150,7 @@ if __name__ == "__main__":
         prebody  = []
         generalinfo     = []
         racialinfo      = []
-
+        
         # loop over our "important" tags, adding content to whichever
         # field this p applies to.
         for p in important:
@@ -166,7 +166,23 @@ if __name__ == "__main__":
 
             if c in name_tags:
                 name.append(data)
-            elif c in address_tags:
+            elif c in address_tags:  
+#                print address
+#                class iterable:
+
+#                    def __init__(self,address_tags):
+#                        self.address_tags = address_tags
+#                        self.location = 0
+
+#                    def __iter__(self):
+#                        return self
+
+#                    def next(self):
+#                        if self.location == len(self.address_tags):
+#                            raise StopIteration
+#                        address_tags = self.address_tags[self.location]
+#                        self.location += 1
+#                        return address_tags
                 address.append(data)
             elif c in website_tags:
                 website.append(data)
@@ -210,7 +226,20 @@ if __name__ == "__main__":
 
     # next print all the subheads
     addresses = [st.address for st in stories]
-    print "\t".join(addresses)
+#    print "\t".join(addresses)
+#    print addresses
+    addy = address[0]
+    print addy + "\t"
+    phone = address[1]
+    print phone + "\t"
+    principal = address[2]
+    print principal + "\t"
+    pemail = address[3]
+    print pemail + "\t"
+#    addies = []
+#    for i in range(0,3):
+#        addies.append(i)
+#        print "\t".join(addresses)
 
     # next the bylines
     websites = [st.website for st in stories]
@@ -218,7 +247,8 @@ if __name__ == "__main__":
 
     # next the bodies
     generalinfos = [st.generalinfo for st in stories]
-    print "\t".join(generalinfos)
+#    print "\t".join(generalinfos)
+    print generalinfo
 
     # finally the author bios
     racialinfos = [st.racialinfo for st in stories]
