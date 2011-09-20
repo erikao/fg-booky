@@ -247,8 +247,28 @@ if __name__ == "__main__":
 
     # next the bodies
     generalinfos = [st.generalinfo for st in stories]
-#    print "\t".join(generalinfos)
-    print generalinfo
+    print "\t".join(generalinfos)
+    import re
+#    print generalinfo
+#    enrollment = generalinfo[0]
+#    print enrollment + "\t"
+#    grades = generalinfo[1]
+#    print grades + "\t"
+#    admin = generalinfo[2]
+#    raceheader = generalinfo[3]
+#    ell = generalinfo[4]
+#    sped = generalinfo[5]
+#    freelunch = generalinfo[6]
+#    new = generalinfo[7]
+#    pride = generalinfo[8]
+#    ap = generalinfo[9]
+#    cte = generalinfo[10]
+#    otherclass = generalinfo[11]
+#    flang = generalinfo[12]
+#    activities = generalinfo[13]
+#    boysports = generalinfo[14]
+#    girlsports = generalinfo[15]
+#    titles = generalinfo[16]
 
     # finally the author bios
     racialinfos = [st.racialinfo for st in stories]

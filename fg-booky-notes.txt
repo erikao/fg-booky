@@ -1,0 +1,31 @@
+x2-name = school name
+x3-address = street address
+else = phone/fax
+else = principal name
+else = principal email
+x3-web = website 
+x4-body-style-7 = enrollment
+x4-body-style-7 = grades served
+x4-body-style-7 = admissions requirements
+x4-body-style if = "Student racial demographics:" = ignore
+x5-racial-demo = race
+x4-body-style-7 = ELL
+x4-body-style-7 = sped
+x4-body-style-7 = freelunch
+x4-body-style-7 = new this year
+x4-body-style-7 = points of pride
+x4-body-style-7 = ap courses
+x4-body-style-7 = CTE
+x4-body-style-7 = other courses
+x4-body-style-7 = foreign languages
+x4-body-style-7 = activities
+x4-body-style-7 = boysports
+x4-body-style-7 = girlsports
+x4-body-style-7 = titles 
+
+
+
+<span class="trade-obl"></span> italics
+convert †, triangle
+
+i added story tags to each school just so i could keep up with the structure of the booky script. 
