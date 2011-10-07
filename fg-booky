@@ -33,12 +33,6 @@ name_tags = set(["x2-name"])
 # p tags with these classes correspond to sub-headlines
 address_tags = set(["x3-address"])
 
-## p tags with these classes correspond to sub-headlines
-#address_ph_tags = set(["x3-address-ph"])
-
-## p tags with these classes correspond to sub-headlines
-#address_email_tags = set(["x3-address-email"])
-
 # p tags with these classes correspond to bylines
 website_tags = set(["x3-web"])
     
@@ -87,9 +81,9 @@ def cleanup(s):
 # this class represents a story--each of the 5 fields defaults to
 # an empty string. it's mostly for organization purposes right now.
 class Story(object):
-    def __init__(self, name="", address="".[0], website="", generalinfo="", racialinfo=""):
+    def __init__(self, name="", addresses=[], website="", generalinfo="", racialinfo=""):
         self.name = name
-        self.address = address
+        self.addresses = addresses
         self.website = website
         self.generalinfo = generalinfo
         self.racialinfo = racialinfo
@@ -151,7 +145,7 @@ if __name__ == "__main__":
     
         # HEADLINE , SUBHEAD , BYLINE , BODY-COPY , AUTHOR-BIO
         name = []
-        address  = []
+        addresses  = []
         website   = []
         prebody  = []
         generalinfo     = []
@@ -189,7 +183,7 @@ if __name__ == "__main__":
 #                        address_tags = self.address_tags[self.location]
 #                        self.location += 1
 #                        return address_tags
-                address.append(data)
+                addresses.append(data)
             elif c in website_tags:
                 website.append(data)
             elif c in generalinfo_tags:
@@ -212,13 +206,13 @@ if __name__ == "__main__":
 	    generalinfo.append(str(p))
         # join all the seperate p tag content into the strings we care about
         n = "".join(name)
-        a = "".join(address)
+#        a = "".join(address)
         w = "".join(website)
         g = "".join(generalinfo)
         r = "".join(racialinfo)
 
         story = Story(name=cleanup(n),
-                      address=cleanup(a),
+                      addresses=[cleanup(s) for s in addresses],
                       website=cleanup(w),
                       generalinfo=cleanup(g),
                       racialinfo=cleanup(r))
@@ -230,8 +224,11 @@ if __name__ == "__main__":
     print "\t".join(names)
 
     # next print all the subheads
-    addresses = [st.address for st in stories]
-    print "\t".join(addresses)
+    for i in range(0, len(stories[0].addresses)):
+        print "\t".join([st.addresses[i] for st in stories])
+    
+#    addresses = [st.address for st in stories]
+#    print "\t".join(addresses)
 #    print addresses
 #    addy = address[0]
 #    print addy + "\t"
