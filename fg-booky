@@ -33,6 +33,12 @@ name_tags = set(["x2-name"])
 # p tags with these classes correspond to sub-headlines
 address_tags = set(["x3-address"])
 
+## p tags with these classes correspond to sub-headlines
+#address_ph_tags = set(["x3-address-ph"])
+
+## p tags with these classes correspond to sub-headlines
+#address_email_tags = set(["x3-address-email"])
+
 # p tags with these classes correspond to bylines
 website_tags = set(["x3-web"])
     
@@ -81,7 +87,7 @@ def cleanup(s):
 # this class represents a story--each of the 5 fields defaults to
 # an empty string. it's mostly for organization purposes right now.
 class Story(object):
-    def __init__(self, name="", address="", website="", generalinfo="", racialinfo=""):
+    def __init__(self, name="", address="".[0], website="", generalinfo="", racialinfo=""):
         self.name = name
         self.address = address
         self.website = website
@@ -204,13 +210,12 @@ if __name__ == "__main__":
 		elif cls == 'bio-unital':
 		    span.replaceWith("<em>%s</em>" % txt)
 	    generalinfo.append(str(p))
-
         # join all the seperate p tag content into the strings we care about
-        n = ''.join(name)
-        a = ''.join(address)
-        w = ''.join(website)
-        g = ''.join(generalinfo)
-        r = ''.join(racialinfo)
+        n = "".join(name)
+        a = "".join(address)
+        w = "".join(website)
+        g = "".join(generalinfo)
+        r = "".join(racialinfo)
 
         story = Story(name=cleanup(n),
                       address=cleanup(a),
@@ -226,20 +231,29 @@ if __name__ == "__main__":
 
     # next print all the subheads
     addresses = [st.address for st in stories]
-#    print "\t".join(addresses)
+    print "\t".join(addresses)
 #    print addresses
-    addy = address[0]
-    print addy + "\t"
-    phone = address[1]
-    print phone + "\t"
-    principal = address[2]
-    print principal + "\t"
-    pemail = address[3]
-    print pemail + "\t"
+#    addy = address[0]
+#    print addy + "\t"
+#    phone = address[1]
+#    print phone + "\t"
+#    principal = address[2]
+#    print principal + "\t"
+#    pemail = address[3]
+#    print pemail + "\t"
 #    addies = []
 #    for i in range(0,3):
-#        addies.append(i)
+#        address.append(i)
 #        print "\t".join(addresses)
+#        print addresses
+#        addy = address[0]
+#        print addy + "\t"
+#        phone = address[1]
+#        print phone + "\t"
+#        principal = address[2]
+#        print principal + "\t"
+#        pemail = address[3]
+#        print pemail + "\t"
 
     # next the bylines
     websites = [st.website for st in stories]
